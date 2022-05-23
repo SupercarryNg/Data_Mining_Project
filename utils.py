@@ -1,8 +1,13 @@
 import pandas as pd
+# import numpy as np
+# import matplotlib.pyplot as plt
 
+# from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegressionCV
+# from sklearn.metrics import roc_curve, auc
+# from sklearn.preprocessing import label_binarize
 
 from pprint import pprint
 from visualization import *
@@ -104,7 +109,7 @@ def stock_rank(df):
 
 
 # factor test
-def factor_test(df_rank, index_cum, freq='BM', tier_num=5):
+def factor_test(df_rank, index_cum, period_idx, method, freq='BM', tier_num=5):
     freq_dict = {'BM': 12, 'B': 252, 'Q': 4, 'W': 52, '6M': 2}
 
     num = freq_dict[freq]
@@ -127,17 +132,17 @@ def factor_test(df_rank, index_cum, freq='BM', tier_num=5):
     y_pred = df['rise'].copy()
     y_test = y_test.apply(lambda x: 1 if x >= 0 else 0)
 
-    df_tier_ret = plot_all_evaluation(y_test, y_pred, df, index_cum, tier_num)
+    df_tier_ret = plot_all_evaluation(y_test, y_pred, df, index_cum, tier_num, period_idx=period_idx, method=method)
     print_long_short(df, tier_num, num, is_period=True)
 
     return df_tier_ret
 
 
-def test_all_period(index_cum, tier_ret, auc_all, freq='BM', tier_num=5):
+def test_all_period(index_cum, tier_ret, auc_all, method, freq='BM', tier_num=5):
     freq_dict = {'BM': 12, 'B': 252, 'Q': 4, 'W': 52, '6M': 2}
     num = freq_dict[freq]
 
-    plot_test_all_period(index_cum, tier_ret, tier_num, auc_all)
+    plot_test_all_period(index_cum, tier_ret, tier_num, auc_all, method=method)
     print('#'*15 + ' All Period Results ' + '#'*15)
     print_long_short(tier_ret, tier_num, num, is_period=False)
 

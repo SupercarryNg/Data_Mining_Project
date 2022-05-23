@@ -74,7 +74,8 @@ def main_func(period_len, val_len, param_grid=None, method='lr'):
         index_cum_period = index_cum.loc[mask_index_cum].copy()
         index_cum_period.set_index('TRADE_DATE', inplace=True)
 
-        df_tier_ret_tmp, auc = factor_test(df_val_estimator_rank, index_cum=index_cum_period, freq='BM', tier_num=5)
+        df_tier_ret_tmp, auc = factor_test(df_val_estimator_rank, index_cum=index_cum_period,
+                                           period_idx=i, method=method, freq='BM', tier_num=5)
         df_tier_ret = df_tier_ret.append(df_tier_ret_tmp)
         auc_all.append(auc)
 
@@ -91,7 +92,7 @@ def main_func(period_len, val_len, param_grid=None, method='lr'):
     index_cum_all = index_cum.loc[mask_index_cum_all].copy()
     index_cum_all.set_index('TRADE_DATE', inplace=True)
 
-    test_all_period(index_cum_all, df_tier_ret, auc_all, freq='BM', tier_num=5)
+    test_all_period(index_cum_all, df_tier_ret, auc_all, method=method, freq='BM', tier_num=5)
 
 
 if __name__ == '__main__':

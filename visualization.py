@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 from sklearn import metrics
 
@@ -72,7 +73,7 @@ def plot_long_short(df, tier_num):
     plt.title('long short portfolio performance')
 
 
-def plot_all_evaluation(y_test, y_pred, df, index_cum, tier_num):
+def plot_all_evaluation(y_test, y_pred, df, index_cum, tier_num, period_idx, method):
     plt.figure(figsize=(20, 20))
 
     plt.subplot(2, 2, 1)
@@ -87,6 +88,18 @@ def plot_all_evaluation(y_test, y_pred, df, index_cum, tier_num):
     plt.subplot(2, 2, 4)
     plot_long_short(df, tier_num)
 
+    path = 'results/' + str(method)
+
+    # Check whether the specified path exists or not
+    isExist = os.path.exists(path)
+
+    if not isExist:
+        # Create a new directory because it does not exist
+        os.makedirs(path)
+        print("The new directory is created!")
+
+    img_path = path + '/' + str(period_idx) + '.png'
+    plt.savefig(img_path)
     plt.show()
 
     return df_tier_ret, auc
@@ -150,7 +163,7 @@ def plot_portfolio_cut_all(index_cum, tier_ret, tier_num):
 
 def plot_excess_return_all(index_cum, tier_ret, tier_num):
     for i in range(1, tier_num+1):
-        plt.plot(((tier_ret.iloc[:,i]+1).cumprod()-index_cum.T).ffill().T, label='tier '+str(i))
+        plt.plot(((tier_ret.iloc[:, i]+1).cumprod()-index_cum.T).ffill().T, label='tier '+str(i))
         plt.legend()
     plt.title('excess return cut by rank_')
 
@@ -165,10 +178,10 @@ def plot_roc_auc_all(auc_all):
     plt.plot(auc_all, label='auc')
     plt.legend()
     plt.title('AUC score')
-    plt.show()
 
 
-def plot_test_all_period(index_cum, tier_ret, tier_num, auc_all):
+
+def plot_test_all_period(index_cum, tier_ret, tier_num, auc_all, method):
     plt.figure(figsize=(20, 20))
 
     plt.subplot(2, 2, 1)
@@ -183,6 +196,9 @@ def plot_test_all_period(index_cum, tier_ret, tier_num, auc_all):
     plt.subplot(2, 2, 4)
     plot_roc_auc_all(auc_all)
 
+    path = 'results/' + str(method)
+    img_path = path + '/' + str(method) + '_all.png'
+    plt.savefig(img_path)
     plt.show()
 
 
