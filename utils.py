@@ -1,13 +1,8 @@
 import pandas as pd
-# import numpy as np
-# import matplotlib.pyplot as plt
 
-# from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegressionCV
-# from sklearn.metrics import roc_curve, auc
-# from sklearn.preprocessing import label_binarize
 
 from pprint import pprint
 from visualization import *
