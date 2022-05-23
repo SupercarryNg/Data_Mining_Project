@@ -19,9 +19,10 @@ warnings.filterwarnings('ignore')
 
 # data preprocess filling the symbol codes, transform  pd into datetime format
 def preprocessing(df):
-    df = df.reset_index(drop=True)
     # Drop the duplicates rows
     df = df.drop_duplicates(keep='first')
+    df.dropna(how='any', inplace=True)
+    df = df.reset_index(drop=True)
 
     # process the table with TICKER SYMBOL
     if 'TICKER_SYMBOL' in df.columns:
